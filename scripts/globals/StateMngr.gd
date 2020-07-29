@@ -13,13 +13,13 @@ func _ready():
 	# Create (possibly load) level progress
 	# Default value is false for each configured Level
 	var levelProgress_default = {}
-	for level_id in C.LEVELS.keys():
-		levelProgress_default[str(level_id)] = C.UNLOCK_ALL_LEVELS
+	for level_id in Config.LEVELS.keys():
+		levelProgress_default[str(level_id)] = Config.UNLOCK_ALL_LEVELS
 	PersistenceMngr.add_state("levelProgress", levelProgress_default)
 	
 	# Create (possibly load) settings
-	PersistenceMngr.add_state("settingsVideo", C.DEFAULT_OPTIONS_VIDEO).connect("changed", self, "_on_settingsVideo_update")
-	PersistenceMngr.add_state("settingsAudio", C.DEFAULT_OPTIONS_AUDIO).connect("changed", self, "_on_settingsAudio_update")
+	PersistenceMngr.add_state("settingsVideo", Config.DEFAULT_OPTIONS_VIDEO).connect("changed", self, "_on_settingsVideo_update")
+	PersistenceMngr.add_state("settingsAudio", Config.DEFAULT_OPTIONS_AUDIO).connect("changed", self, "_on_settingsAudio_update")
 	PersistenceMngr.add_state("settingsControls", default_options_controls.duplicate(true)).connect("changed", ControlMngr, "set_input_map_from_settings")
 	
 	

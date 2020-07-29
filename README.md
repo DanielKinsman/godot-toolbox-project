@@ -126,16 +126,16 @@ For global access, these Managers are put into the projects autoload.
 ### D for Debug
 
 Contains custom debug print functions.
-Each print has a topic (of enum D.LogCategory or a string) and D.LogLevel
+Each print has a topic (of enum Debug.LogCategory or a string) and Debug.LogLevel
 
-Use the short-hand fcts ```D.w``` and ```D.e``` for warnings and errors.
+Use the short-hand fcts ```Debug.w``` and ```Debug.e``` for warnings and errors.
 ```gdscript
 # output grounded pos in topic "Player"
-D.l("Player", ["grounded", position])
+Debug.l("Player", ["grounded", position])
 
 # equivalent
-D.l(D.LogCategory.GAME, ["Savefile could not be found", state], LogLevel.WARN)
-D.w(D.LogCategory.GAME, ["Savefile could not be found", state])
+Debug.l(Debug.LogCategory.GAME, ["Savefile could not be found", state], LogLevel.WARN)
+Debug.w(Debug.LogCategory.GAME, ["Savefile could not be found", state])
 ```
 The Config file allows filtering the debug output by topic and LogLevel
 
@@ -145,7 +145,7 @@ Contains global settings for hiding menus, the title song, default settings, scr
 
 Since the config is global, it can be accessed:
 ```gdscript
-health = 100 if C.is_debug else 3
+health = 100 if Config.is_debug else 3
 ```
 
 ### PersistenceMngr
@@ -199,7 +199,7 @@ All screens must inherit *[scenes/screen/Screen.tscn]*.
 
 ```gdscript
 # Open settings screen
-ScreenMngr.push_screen(C.SCREEN_OPTIONS_MENU)
+ScreenMngr.push_screen(Config.SCREEN_OPTIONS_MENU)
 
 # Go to custom screen
 ScreenMngr.push_screen(load("res://scenes/screens/my_custom_screen.tscn"))

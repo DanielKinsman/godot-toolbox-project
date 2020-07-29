@@ -46,27 +46,27 @@ const UNLOCK_ALL_LEVELS = IS_DEBUG
 const USE_MOBILE_CONTROLS = IS_MOBILE
 
 const LEVELS = {
-	0:		preload("res://scenes/game/levels/PlatformerParallax.tscn"),
-	1:		preload("res://scenes/game/levels/TopDownIsometric.tscn"),
-	2:		preload("res://scenes/game/levels/PlatformerAutotile.tscn"),
-	3:		preload("res://scenes/game/levels/PlatformerDarkCave.tscn"),
-	4:		preload("res://scenes/game/levels/TopDownDungeonMystery.tscn"),
+    0:		preload("res://scenes/game/levels/PlatformerParallax.tscn"),
+    1:		preload("res://scenes/game/levels/TopDownIsometric.tscn"),
+    2:		preload("res://scenes/game/levels/PlatformerAutotile.tscn"),
+    3:		preload("res://scenes/game/levels/PlatformerDarkCave.tscn"),
+    4:		preload("res://scenes/game/levels/TopDownDungeonMystery.tscn"),
 }
 
 ####################################################################
 # OPTIONS
 
 const DEFAULT_OPTIONS_AUDIO = {
-	"Master" : 80,
-	"Music" : 100,
-	"Effects" : 100
+    "Master" : 80,
+    "Music" : 100,
+    "Effects" : 100
 }
 
 const DEFAULT_OPTIONS_VIDEO = {
-	"Fullscreen" : false,
-	"VSync" : true
+    "Fullscreen" : false,
+    "VSync" : true
 }
-	
+
 ####################################################################
 # LOGGING
 
@@ -76,13 +76,13 @@ const show_log = true
 # All LogCategories are shown by default. Add true to this Dictionary to
 # prevent showing  Logs of this LogCategory
 var hide_debug_log_categories = {
-#	D.LogCategory.PLAYER : true,
+#	Debug.LogCategory.PLAYER : true,
 }
 
 # All LogLevels are shown by default. Add true to this Dictionary to
 # prevent showing Logs of this LogLevel
 var hide_log_level = {
-#	D.LogCategory.PLAYER : true,
+#	Debug.LogCategory.PLAYER : true,
 }
 
 

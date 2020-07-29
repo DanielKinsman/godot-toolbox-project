@@ -35,17 +35,17 @@ func _process(delta):
 #############################################################
 # SIGNALS
 func _on_game_started():
-	D.l("Game", ["Game started"])
+	Debug.l("Game", ["Game started"])
 	
 func _on_game_ended():
-	D.l("Game", ["Game ended"])
+	Debug.l("Game", ["Game ended"])
 	restart_level()
 	
 func _on_game_paused(pause_on):
-	D.l("Game", ["Game paused", pause_on])
+	Debug.l("Game", ["Game paused", pause_on])
 	
 func _on_level_started(level:Node):
-	D.l("Game", ["Level started [", {
+	Debug.l("Game", ["Level started [", {
 		"name" : level.name,
 		"camera_type" : level.LevelCamera.CameraType.keys()[level.camera_type()],
 		"control_scheme" : level.Player.ControlScheme.keys()[level.get_control_scheme()], 
@@ -54,16 +54,16 @@ func _on_level_started(level:Node):
 	} , "]"])
 	
 func _on_level_lost():
-	D.l("Game", ["Level lost"])
+	Debug.l("Game", ["Level lost"])
 	
-	if C.DIRECT_RESPAWN_ON_LEVEL_LOST:
+	if Config.DIRECT_RESPAWN_ON_LEVEL_LOST:
 		call_deferred("restart_level")
 
 func _on_level_won():
-	D.l("Game", ["Level won", cur_level_id])
+	Debug.l("Game", ["Level won", cur_level_id])
 	PersistenceMngr.set_state("levelProgress." + str(cur_level_id), true)
 	
-	if C.DIRECT_NEXT_ON_LEVEL_WON:
+	if Config.DIRECT_NEXT_ON_LEVEL_WON:
 		call_deferred("next_level")
 
 	
@@ -80,7 +80,7 @@ func start_level(next_level_id):
 		current_level = null
 	
 	# instantiate and add new level
-	var next_level = C.LEVELS[next_level_id].instance()
+	var next_level = Config.LEVELS[next_level_id].instance()
 	add_child(next_level)
 	
 	# trigger signal
@@ -94,16 +94,16 @@ func restart_level():
 	start_level(cur_level_id)
 func next_level():
 	var next_level_id = cur_level_id + 1
-	if next_level_id < C.LEVELS.size():
+	if next_level_id < Config.LEVELS.size():
 		start_level(next_level_id)
 	else:
-		D.l("Game", ["ALL LEVELS COMPLETED"])
+		Debug.l("Game", ["ALL LEVELS COMPLETED"])
 
 func _process_level(_delta):
 	# Switch Level with key "1"
 	var last_level_id = cur_level_id
 	if Input.is_action_just_pressed("game_switch_demo"):
-		cur_level_id = (1 + cur_level_id) % C.LEVELS.size()
+		cur_level_id = (1 + cur_level_id) % Config.LEVELS.size()
 	if last_level_id != cur_level_id:
 		start_level(cur_level_id)
 

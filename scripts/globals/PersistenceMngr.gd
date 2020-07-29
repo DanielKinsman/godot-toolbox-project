@@ -6,7 +6,7 @@ extends Node
 # Each PersistentObject has a unique name and an associated Dictionary for its data.
 #
 # To create persistent state Dictionary, use:
-#   PersistenceMngr.add_state("settingsAudio", C.DEFAULT_OPTIONS_AUDIO)
+#   PersistenceMngr.add_state("settingsAudio", Config.DEFAULT_OPTIONS_AUDIO)
 #   .connect("changed", self, "_on_settingsAudio_update")
 #
 # To access the entire Dictionary, use
@@ -23,7 +23,7 @@ const SAVE_ON_SET = 2
 var _objs = {}
 
 func _ready():
-	if C.REMOVE_ALL_SAVES:
+	if Config.REMOVE_ALL_SAVES:
 		for obj in _objs.values():
 			obj._remove_save()
 
@@ -47,12 +47,12 @@ func get_state(uid:String):
 
 	# Cancel if uid_path has length 0
 	if nodes.size() == 0:
-		D.e(D.LogCategory.PERSISTENCE, ["get_state", "Could not parse uid [", "UID:", uid, "]" ])
+		Debug.e(Debug.LogCategory.PERSISTENCE, ["get_state", "Could not parse uid [", "UID:", uid, "]" ])
 		return null
 
 	# Cancel if uid_paths first node doesnt exists
 	if !nodes[0] in _objs:
-		D.e(D.LogCategory.PERSISTENCE, ["get_state", "Could not parse uid, invalid Node in Path [", "UID:", uid, ",", "Node:", nodes[0], "]" ])
+		Debug.e(Debug.LogCategory.PERSISTENCE, ["get_state", "Could not parse uid, invalid Node in Path [", "UID:", uid, ",", "Node:", nodes[0], "]" ])
 		return null
 
 	# Iterate through json
@@ -66,20 +66,20 @@ func get_state(uid:String):
 func __try_descend(uid, tree, node):
 	if tree is Array:
 		if !node.is_valid_integer():
-			D.e(D.LogCategory.PERSISTENCE, ["Could not parse uid, non-integer node on array [", "UID:", uid, ",", "Node:", node, "]" ])
+			Debug.e(Debug.LogCategory.PERSISTENCE, ["Could not parse uid, non-integer node on array [", "UID:", uid, ",", "Node:", node, "]" ])
 			return null
 			
 		var inode = int(node)
 		if tree.size() > inode:
 			return tree[inode]
 		else:
-			D.e(D.LogCategory.PERSISTENCE, ["Could not parse uid, out of bounds array access [", "UID:", uid, ",", "Node:", node, "]" ])
+			Debug.e(Debug.LogCategory.PERSISTENCE, ["Could not parse uid, out of bounds array access [", "UID:", uid, ",", "Node:", node, "]" ])
 			return null
 	elif tree is Dictionary:
 		if tree.has(node):
 			return tree[node]
 		else:
-			D.e(D.LogCategory.PERSISTENCE, ["Could not parse uid, invalid Node in Path [", "UID:", uid, ",", "Node:", node, "]" ])
+			Debug.e(Debug.LogCategory.PERSISTENCE, ["Could not parse uid, invalid Node in Path [", "UID:", uid, ",", "Node:", node, "]" ])
 			return null
 
 #############################################################
@@ -90,13 +90,13 @@ func __try_descend(uid, tree, node):
 func set_state(uid:String, val):
 	var nodes = uid.split(".")
 	if nodes.size() == 0:
-		D.e(D.LogCategory.PERSISTENCE, ["set_state", "Could not parse uid [", "UID:", uid, "]" ])
+		Debug.e(Debug.LogCategory.PERSISTENCE, ["set_state", "Could not parse uid [", "UID:", uid, "]" ])
 	elif nodes.size() == 1:
 		_objs[uid].set_state(val)
 	else:
 		# First node is entire json
 		if !nodes[0] in _objs:
-			D.e(D.LogCategory.PERSISTENCE, ["set_state", "Could not parse uid, invalid Node in Path [", "UID:", uid, ",", "Node:", nodes[0], "]" ])
+			Debug.e(Debug.LogCategory.PERSISTENCE, ["set_state", "Could not parse uid, invalid Node in Path [", "UID:", uid, ",", "Node:", nodes[0], "]" ])
 			return false
 		var cur_obj = _objs[nodes[0]]
 		var tree = cur_obj.get_state()
@@ -113,7 +113,7 @@ func set_state(uid:String, val):
 		elif tree is Array and last_node.is_valid_integer() and tree.size() > int(last_node):
 			tree[int(last_node)] = val
 		else:
-			D.e(D.LogCategory.PERSISTENCE, ["set_state", "Could not parse uid, invalid Node in Path [", "UID:", uid, ",", "Node:", last_node, "]" ])
+			Debug.e(Debug.LogCategory.PERSISTENCE, ["set_state", "Could not parse uid, invalid Node in Path [", "UID:", uid, ",", "Node:", last_node, "]" ])
 			return false
 
 		# If no error: trigger_update
@@ -166,10 +166,10 @@ class PersistentObj:
 		if file.open(_get_save_path(), File.WRITE) == OK:
 			var string = _to_string()
 			file.store_string(string)
-			D.l(D.LogCategory.PERSISTENCE, ["Wrote save [", "UID:", uid, ",", "Data:", string, "]" ])
+			Debug.l(Debug.LogCategory.PERSISTENCE, ["Wrote save [", "UID:", uid, ",", "Data:", string, "]" ])
 			return true
 		else:
-			D.e(D.LogCategory.PERSISTENCE, ["Error opening PersistentObj File for writing [", "UID:", uid, "]" ])
+			Debug.e(Debug.LogCategory.PERSISTENCE, ["Error opening PersistentObj File for writing [", "UID:", uid, "]" ])
 		return false
 
 	#############################################################
@@ -181,7 +181,7 @@ class PersistentObj:
 			val = json_result.result
 			return true
 		else:
-			D.e(D.LogCategory.PERSISTENCE, ["Error parsing PersistentObj from json [", "UID:", uid, ",", "str:", string, "]" ])
+			Debug.e(Debug.LogCategory.PERSISTENCE, ["Error parsing PersistentObj from json [", "UID:", uid, ",", "str:", string, "]" ])
 			return false
 
 	func _load_from_save()->bool:
@@ -190,10 +190,10 @@ class PersistentObj:
 			if file.open(_get_save_path(), File.READ) == OK:
 				var string = file.get_as_text()
 				if _load_from_string(string):
-					D.l(D.LogCategory.PERSISTENCE, ["Loaded save [", "UID:", uid, ",", "Data:", val, "]" ])
+					Debug.l(Debug.LogCategory.PERSISTENCE, ["Loaded save [", "UID:", uid, ",", "Data:", val, "]" ])
 					return true
 			else:
-				D.e(D.LogCategory.PERSISTENCE, ["Error opening PersistentObj File [", "UID:", uid, "]" ])
+				Debug.e(Debug.LogCategory.PERSISTENCE, ["Error opening PersistentObj File [", "UID:", uid, "]" ])
 		return false
 
 	#############################################################

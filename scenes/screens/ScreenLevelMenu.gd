@@ -8,7 +8,7 @@ func _ready():
 		child.queue_free()
 	
 	
-	for level_id in C.LEVELS.keys():
+	for level_id in Config.LEVELS.keys():
 		# Create
 		var btn:Button = Button.new()
 		
@@ -46,4 +46,4 @@ func is_level_unlocked(level_id):
 func _on_button_pressed(level_id):
 	SoundMngr.play_ui_sound(SoundMngr.UI_SELECT)
 	StateMngr.start_level_id = level_id
-	ScreenMngr.push_screen(C.SCREEN_GAME)
+	ScreenMngr.push_screen(Config.SCREEN_GAME)

@@ -23,8 +23,8 @@ config/windows_native_icon="res://assets/logo/logo1024.png"
 
 [autoload]
 
-C="*res://scripts/globals/Config.gd"
-D="*res://scripts/globals/Debug.gd"
+Config="*res://scripts/globals/Config.gd"
+Debug="*res://scripts/globals/Debug.gd"
 ScreenMngr="*res://scripts/globals/ScreenMngr.gd"
 StateMngr="*res://scripts/globals/StateMngr.gd"
 SignalMngr="*res://scripts/globals/SignalMngr.gd"

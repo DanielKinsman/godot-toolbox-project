@@ -9,7 +9,7 @@ func _ready():
 	title_song_player = AudioStreamPlayer.new()
 	add_child(title_song_player)
 	title_song_player.bus = "Music"
-	title_song_player.stream = C.TITLE_SONG
+	title_song_player.stream = Config.TITLE_SONG
 	
 	ui_sound_player = AudioStreamPlayer.new()
 	add_child(ui_sound_player)

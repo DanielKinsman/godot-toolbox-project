@@ -17,7 +17,7 @@ func _ready():
 			break
 			
 	if screen_history.size() != 1:
-		D.e(D.LogCategory.SCREEN_MANAGER, ["Initial scene is not a is not inherited from Screen.tscn!"])
+		Debug.e(Debug.LogCategory.SCREEN_MANAGER, ["Initial scene is not a is not inherited from Screen.tscn!"])
 		return
 	screen_history[0].transition_open_immediately()
 	
@@ -31,7 +31,7 @@ func ___enter_screen(screen):
 	get_tree().root.add_child(screen)
 	
 	# Debug log & Signal
-	D.l(D.LogCategory.SCREEN_MANAGER, ["Switched screen to", screen.name])
+	Debug.l(Debug.LogCategory.SCREEN_MANAGER, ["Switched screen to", screen.name])
 	SignalMngr.emit_signal("screen_entered", screen)
 	
 
@@ -40,7 +40,7 @@ func ___exit_screen():
 	get_tree().root.remove_child(screen_history[0])
 	
 	# Debug log & Signal
-	D.l(D.LogCategory.SCREEN_MANAGER, ["Exited screen", screen_history[0].name])
+	Debug.l(Debug.LogCategory.SCREEN_MANAGER, ["Exited screen", screen_history[0].name])
 	SignalMngr.emit_signal("screen_left", screen_history[0])
 
 #############################################################
@@ -57,7 +57,7 @@ func push_screen(screen_scene):
 	var show_transition = screen_inst.show_transition_on_enter or (screen_history.size() >= 1 and screen_history[0].show_transition_on_leave)
 	
 	if !screen_inst is Screen:
-		D.e(D.LogCategory.SCREEN_MANAGER, ["Tried pushing Screen, but it is not a PackedScene, inherited from Screen.tscn"])
+		Debug.e(Debug.LogCategory.SCREEN_MANAGER, ["Tried pushing Screen, but it is not a PackedScene, inherited from Screen.tscn"])
 		return
 	
 	if show_transition and screen_history.size() >= 1:
@@ -81,7 +81,7 @@ func push_screen(screen_scene):
 
 func pop_screen():
 	if screen_history.size() < 2:
-		D.e(D.LogCategory.SCREEN_MANAGER, ["Tried popping Screen, but the screen_history buffer would have been empty"])
+		Debug.e(Debug.LogCategory.SCREEN_MANAGER, ["Tried popping Screen, but the screen_history buffer would have been empty"])
 		return
 	
 	var show_transition = screen_history[1].show_transition_on_enter or screen_history[0].show_transition_on_leave
