@@ -6,9 +6,9 @@ onready var btn_audio = $MenuLayer/UIBox/PanelContainer/VBoxContainer/Menu/BtnAu
 onready var btn_controls = $MenuLayer/UIBox/PanelContainer/VBoxContainer/Menu/BtnControls
 
 func _ready():
-	if !Config.SHOW_SETTINGS_VIDEO:
-		btn_video.hide()
-	if !Config.SHOW_SETTINGS_AUDIO:
-		btn_audio.hide()
-	if !Config.SHOW_SETTINGS_KEYBINDINGS:
-		btn_controls.hide()
+    if !Config.SHOW_SETTINGS_VIDEO:
+        btn_video.hide()
+    if !Config.SHOW_SETTINGS_AUDIO:
+        btn_audio.hide()
+    if !Config.SHOW_SETTINGS_KEYBINDINGS:
+        btn_controls.hide()

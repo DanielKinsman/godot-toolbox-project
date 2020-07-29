@@ -42,44 +42,44 @@ onready var knob = $Knob
 #############################################################
 # HANDLERS
 func _on_touch():
-	pass
+    pass
 
 func _on_untouch():
-	set_current_control(Vector2.ZERO)
+    set_current_control(Vector2.ZERO)
 
 func _on_touch_move(global_pos:Vector2):
-	# mouse pos relative to top left corner
-	var pos = global_pos - rect_global_position
-	# mouse pos relative to center
-	pos.x -= _cache_half_size
-	pos.y -= _cache_half_size
-	# normalized Vector2([-1,1], [-1,1])
-	pos = pos / _cache_half_size
-	# normalized and length <= 1
-	var pos_len = pos.length()
-	if pos_len > 1: pos = pos / pos_len
-	
-	set_current_control(pos)
-		
+    # mouse pos relative to top left corner
+    var pos = global_pos - rect_global_position
+    # mouse pos relative to center
+    pos.x -= _cache_half_size
+    pos.y -= _cache_half_size
+    # normalized Vector2([-1,1], [-1,1])
+    pos = pos / _cache_half_size
+    # normalized and length <= 1
+    var pos_len = pos.length()
+    if pos_len > 1: pos = pos / pos_len
+
+    set_current_control(pos)
+
 func set_current_control(control):
-	current_control = control
-	knob.rect_position = current_control * _cache_half_size
-	
+    current_control = control
+    knob.rect_position = current_control * _cache_half_size
+
 func _physics_process(delta):
-	process_control(left_action, left_allow, left_analog, -current_control.x, left_digital_threshold)
-	process_control(up_action, up_allow, up_analog, -current_control.y, up_digital_threshold)
-	process_control(right_action, right_allow, right_analog, current_control.x, right_digital_threshold)
-	process_control(down_action, down_allow, down_analog, current_control.y, down_digital_threshold)
+    process_control(left_action, left_allow, left_analog, -current_control.x, left_digital_threshold)
+    process_control(up_action, up_allow, up_analog, -current_control.y, up_digital_threshold)
+    process_control(right_action, right_allow, right_analog, current_control.x, right_digital_threshold)
+    process_control(down_action, down_allow, down_analog, current_control.y, down_digital_threshold)
 
 var currently_pressed = []
 func process_control(action, allow, analog, current, digital_threshold):
-	if allow and ((analog and current > 0) or (!analog and current > digital_threshold)):
-		Input.action_press(action, current if action else 1.0)
-		if not action in currently_pressed:
-			currently_pressed.append(action)
-	elif action in currently_pressed:
-		currently_pressed.erase(action)
-		Input.action_release(action)
+    if allow and ((analog and current > 0) or (!analog and current > digital_threshold)):
+        Input.action_press(action, current if action else 1.0)
+        if not action in currently_pressed:
+            currently_pressed.append(action)
+    elif action in currently_pressed:
+        currently_pressed.erase(action)
+        Input.action_release(action)
 
 
-		
+

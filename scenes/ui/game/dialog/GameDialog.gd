@@ -27,89 +27,89 @@ var level
 #############################################################
 # LIFECYCLE
 func _ready():
-	if can_open_and_close:
-		SignalMngr.connect(signal_to_open_to, self, "_on_open_or_close")
-	else:
-		SignalMngr.connect(signal_to_open_to, self, "_on_open")
-	
-	SignalMngr.connect("level_started", self, "_on_level_started")
-	
-	if soundtrack_or_null:
-		audioStreamPlayer.stream = soundtrack_or_null
-	
+    if can_open_and_close:
+        SignalMngr.connect(signal_to_open_to, self, "_on_open_or_close")
+    else:
+        SignalMngr.connect(signal_to_open_to, self, "_on_open")
+
+    SignalMngr.connect("level_started", self, "_on_level_started")
+
+    if soundtrack_or_null:
+        audioStreamPlayer.stream = soundtrack_or_null
+
 func _process(delta):
-	if can_be_exited_by_pressing_escape and is_open and Input.is_action_just_pressed("ui_cancel"):
-		_on_BtnResume_pressed()
-	if toggled_by_pause_action and Input.is_action_just_pressed("game_pause"):
-		__show(!is_open)
+    if can_be_exited_by_pressing_escape and is_open and Input.is_action_just_pressed("ui_cancel"):
+        _on_BtnResume_pressed()
+    if toggled_by_pause_action and Input.is_action_just_pressed("game_pause"):
+        __show(!is_open)
 
 #############################################################
 # OPENING & CLOSING
 func _on_level_started(level):
-	self.level = level
-	
+    self.level = level
+
 func _on_open():
-	__show()
-		
+    __show()
+
 func _on_open_or_close(open):
-	__show(open)
-	
+    __show(open)
+
 func __show(show=true):
-	is_open = show
-	invisible_wall.mouse_filter = invisible_wall.MOUSE_FILTER_STOP if is_open else invisible_wall.MOUSE_FILTER_IGNORE
-	root.visible = is_open
-	
-	if soundtrack_or_null:
-		level.pause_soundtrack(is_open)
-		if is_open:	audioStreamPlayer.play(0)
-		else:		audioStreamPlayer.stop()
-	else:
-		level.quiet_soundtrack(is_open)
-	
-	invisible_wall.visible = is_open
-	
-	if pauses_game_while_open:
-		get_tree().paused = is_open
-		
-	if show:
-		for btn in root_btns.get_children():
-			if btn is Button and btn.visible:
-				btn.grab_focus()
-				break
+    is_open = show
+    invisible_wall.mouse_filter = invisible_wall.MOUSE_FILTER_STOP if is_open else invisible_wall.MOUSE_FILTER_IGNORE
+    root.visible = is_open
+
+    if soundtrack_or_null:
+        level.pause_soundtrack(is_open)
+        if is_open:    audioStreamPlayer.play(0)
+        else:        audioStreamPlayer.stop()
+    else:
+        level.quiet_soundtrack(is_open)
+
+    invisible_wall.visible = is_open
+
+    if pauses_game_while_open:
+        get_tree().paused = is_open
+
+    if show:
+        for btn in root_btns.get_children():
+            if btn is Button and btn.visible:
+                btn.grab_focus()
+                break
 
 func __hide():
-	__show(false)
+    __show(false)
 
 #############################################################
 # BUTTON HANDLERS
 
 func _on_InvisibleWall_pressed():
-	if can_be_exited_by_clicking_elsewhere:
-		_on_BtnResume_pressed()
+    if can_be_exited_by_clicking_elsewhere:
+        _on_BtnResume_pressed()
 
 func _on_BtnResume_pressed():
-	SoundMngr.play_ui_sound(SoundMngr.UI_SELECT)
-	if can_open_and_close:
-		SignalMngr.emit_signal(signal_to_open_to, false)
-	else:
-		__hide()
+    SoundMngr.play_ui_sound(SoundMngr.UI_SELECT)
+    if can_open_and_close:
+        SignalMngr.emit_signal(signal_to_open_to, false)
+    else:
+        __hide()
 
 func _on_BtnRetry_pressed():
-	_on_BtnResume_pressed()
-	SignalMngr.emit_signal("restart_level")
+    _on_BtnResume_pressed()
+    SignalMngr.emit_signal("restart_level")
 
 func _on_BtnNext_pressed():
-	_on_BtnResume_pressed()
-	SignalMngr.emit_signal("next_level")
+    _on_BtnResume_pressed()
+    SignalMngr.emit_signal("next_level")
 
 func _on_BtnMenu_pressed():
-	_on_BtnResume_pressed()
-	ScreenMngr.pop_screen()
+    _on_BtnResume_pressed()
+    ScreenMngr.pop_screen()
 
 func _on_BtnQuit_pressed():
-	_on_BtnResume_pressed()
-	ScreenMngr.exit_game()
+    _on_BtnResume_pressed()
+    ScreenMngr.exit_game()
 
 func _on_BtnSettings_pressed():
-	_on_BtnResume_pressed()
-	ScreenMngr.push_screen(Config.SCREEN_OPTIONS_MENU)
+    _on_BtnResume_pressed()
+    ScreenMngr.push_screen(Config.SCREEN_OPTIONS_MENU)
