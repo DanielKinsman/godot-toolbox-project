@@ -35,17 +35,17 @@ func _process(delta):
 #############################################################
 # SIGNALS
 func _on_game_started():
-	Debug.l("Game", ["Game started"])
+	Debug.log("Game", ["Game started"])
 	
 func _on_game_ended():
-	Debug.l("Game", ["Game ended"])
+	Debug.log("Game", ["Game ended"])
 	restart_level()
 	
 func _on_game_paused(pause_on):
-	Debug.l("Game", ["Game paused", pause_on])
+	Debug.log("Game", ["Game paused", pause_on])
 	
 func _on_level_started(level:Node):
-	Debug.l("Game", ["Level started [", {
+	Debug.log("Game", ["Level started [", {
 		"name" : level.name,
 		"camera_type" : level.LevelCamera.CameraType.keys()[level.camera_type()],
 		"control_scheme" : level.Player.ControlScheme.keys()[level.get_control_scheme()], 
@@ -54,13 +54,13 @@ func _on_level_started(level:Node):
 	} , "]"])
 	
 func _on_level_lost():
-	Debug.l("Game", ["Level lost"])
+	Debug.log("Game", ["Level lost"])
 	
 	if Config.DIRECT_RESPAWN_ON_LEVEL_LOST:
 		call_deferred("restart_level")
 
 func _on_level_won():
-	Debug.l("Game", ["Level won", cur_level_id])
+	Debug.log("Game", ["Level won", cur_level_id])
 	PersistenceMngr.set_state("levelProgress." + str(cur_level_id), true)
 	
 	if Config.DIRECT_NEXT_ON_LEVEL_WON:
@@ -97,7 +97,7 @@ func next_level():
 	if next_level_id < Config.LEVELS.size():
 		start_level(next_level_id)
 	else:
-		Debug.l("Game", ["ALL LEVELS COMPLETED"])
+		Debug.log("Game", ["ALL LEVELS COMPLETED"])
 
 func _process_level(_delta):
 	# Switch Level with key "1"

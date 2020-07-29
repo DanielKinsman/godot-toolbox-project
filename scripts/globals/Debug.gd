@@ -17,7 +17,7 @@ enum LogLevel {
 #					Categorizes the logs
 #	objs_to_print		object to log or Array of object to log
 #	log_level		importance LogLevel for this log
-func l(log_categ, objs_to_print, log_level=LogLevel.INFO):
+func log(log_categ, objs_to_print, log_level=LogLevel.INFO):
 	
 	# Don't log if globally off
 	if !Config.show_log: return
@@ -55,8 +55,8 @@ func l(log_categ, objs_to_print, log_level=LogLevel.INFO):
 	else:
 		print(result_str)
 		
-func w(log_categ, objs_to_print):
-	l(log_categ, objs_to_print, LogLevel.WARN)
+func warning(log_categ, objs_to_print):
+	self.log(log_categ, objs_to_print, LogLevel.WARN)
 
-func e(log_categ, objs_to_print):
-	l(log_categ, objs_to_print, LogLevel.ERROR)
+func error(log_categ, objs_to_print):
+	self.log(log_categ, objs_to_print, LogLevel.ERROR)
